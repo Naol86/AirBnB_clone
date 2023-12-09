@@ -26,7 +26,7 @@ class BaseModel:
         """
         Returns a string representation of the object.
         """
-        ans = "[{}}] ({}) <{}>".format(type(self).__name__,
+        ans = "[{}] ({}) <{}>".format(type(self).__name__,
                                        self.id, self.__dict__)
         return ans
 
