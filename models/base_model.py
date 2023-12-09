@@ -44,6 +44,6 @@ class BaseModel:
         dic = self.__dict__.copy()
         dic["__class__"] = self.__class__.__name__
         for i in self.__dict__:
-            if i in {"created_at", "update_at"}:
+            if i in ("created_at", "update_at"):
                 dic[i] = dic[i].isoformat()
         return dic
