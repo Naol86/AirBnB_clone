@@ -25,6 +25,18 @@ CLASSES = [
 
 
 def parse(arg):
+    """
+    Parses a string argument based on the presence of curly braces
+    and brackets.
+    Args:
+        arg (str): The string argument to be parsed.
+    Returns:
+        list: The parsed argument list.
+    Example Usage:
+        parse("User")
+        This code will parse the string "User" and return a list
+        containing the single element ["User"].
+    """
     curly_braces = re.search(r"\{(.*?)\}", arg)
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
@@ -43,6 +55,24 @@ def parse(arg):
 
 
 def check_args(args):
+    """
+    Parse the given string argument and check if it meets certain
+    conditions.
+
+    Args:
+        args (str): The string argument to be parsed.
+
+    Returns:
+        list: The parsed argument list if it passes the checks.
+
+    Raises:
+        None
+
+    Example:
+        >>> check_args("User")
+        ["User"]
+
+    """
     arg_list = parse(args)
 
     if len(arg_list) == 0:
@@ -55,7 +85,10 @@ def check_args(args):
 
 class HBNBCommand(cmd.Cmd):
     """
-    The `HBNBCommand` class is a console interpreter that provides a command-line interface for interacting with a database. It allows the user to perform various operations such as creating, showing, updating, and deleting instances of different classes.
+    The `HBNBCommand` class is a console interpreter that provides
+    a command-line interface for interacting with a database.
+    It allows the user to perform various operations such as creating,
+    showing, updating, and deleting instances of different classes.
 
     Example Usage:
         command = HBNBCommand()
@@ -78,27 +111,32 @@ class HBNBCommand(cmd.Cmd):
         # Output: <number of instances>
 
     Methods:
-        - default(arg): Handles the default behavior when an unknown command is entered.
+        - default(arg): Handles the default behavior when an
+        unknown command is entered.
         - do_EOF(argv): Handles the end-of-file command.
         - do_quit(argv): Handles the quit command.
-        - do_create(argv): Creates a new instance of a class and prints its ID.
+        - do_create(argv): Creates a new instance of a class
+        and prints its ID.
         - do_show(argv): Shows the details of a specific instance.
         - do_all(argv): Lists all instances of a specific class.
         - do_destroy(argv): Deletes a specific instance.
-        - do_update(argv): Updates the attributes of a specific instance.
-        - do_count(arg): Counts the number of instances of a specific class.
+        - do_update(argv): Updates the attributes of a specific
+        instance.
+        - do_count(arg): Counts the number of instances of a
+        specific class.
 
     Fields:
         - CLASSES: A list of class names.
-        - action_map: A dictionary mapping command names to their corresponding methods.
+        - action_map: A dictionary mapping command names to their
+        corresponding methods.
     """
     prompt = "(hbnb) "
     storage = models.storage
 
-
     def emptyline(self):
         """
-        Handle behavior when the user enters an empty line in the console.
+        Handle behavior when the user enters an empty line in the
+        console.
 
         Inputs:
         - None
@@ -113,6 +151,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def default(self, arg):
+        """default function"""
         action_map = {
             "all": self.do_all,
             "show": self.do_show,
@@ -136,19 +175,23 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_EOF(self, argv):
+        """do_EOF function"""
         print("")
         return True
 
     def do_quit(self, argv):
+        """so_qiut function"""
         return True
 
     def do_create(self, argv):
+        """do_create function"""
         args = check_args(argv)
         if args:
             print(eval(args[0])().id)
             self.storage.save()
 
     def do_show(self, argv):
+        """do_show function"""
         args = check_args(argv)
         if args:
             if len(args) != 2:
@@ -161,6 +204,7 @@ class HBNBCommand(cmd.Cmd):
                     print(self.storage.all()[key])
 
     def do_all(self, argv):
+        """do_all function"""
         arg_list = split(argv)
         objects = self.storage.all().values()
         if not arg_list:
@@ -173,6 +217,7 @@ class HBNBCommand(cmd.Cmd):
                        if arg_list[0] in str(obj)])
 
     def do_destroy(self, argv):
+        """do_destroy function"""
         arg_list = check_args(argv)
         if arg_list:
             if len(arg_list) == 1:
@@ -186,6 +231,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
 
     def do_update(self, argv):
+        """do_update function"""
         arg_list = check_args(argv)
         if arg_list:
             if len(arg_list) == 1:
@@ -210,12 +256,14 @@ class HBNBCommand(cmd.Cmd):
             self.storage.save()
 
     def do_count(self, arg):
+        """do_count function"""
         arg1 = parse(arg)
         count = 0
         for obj in models.storage.all().values():
             if arg1[0] == type(obj).__name__:
                 count += 1
         print(count)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
