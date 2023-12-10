@@ -19,7 +19,7 @@ class BaseModel:
         timestamps.
         """
         self.id = str(uuid.uuid4())
-        self.created_at = self.updated_at = str(datetime.now())
+        self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """
@@ -33,7 +33,7 @@ class BaseModel:
         """
         Updates the update timestamp.
         """
-        self.updated_at = str(datetime.now())
+        self.updated_at = datetime.now()
 
     def to_dict(self):
         """
@@ -42,7 +42,8 @@ class BaseModel:
         """
         dic = self.__dict__.copy()
         dic["__class__"] = self.__class__.__name__
-        for i in self.__dict__:
-            if i in ("created_at", "update_at"):
-                dic[i] = self.__dict__[i].isoformat()
+        for k, v in self.__dict__.items():
+            if k in ("created_at", "updated_at"):
+                v = self.__dict__[k].isoformat()
+                dic[k] = v
         return dic
