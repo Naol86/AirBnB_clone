@@ -13,20 +13,27 @@ class BaseModel:
     convert it to a dictionary.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """
         Initializes the object by setting the unique identifier and
         timestamps.
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = self.updated_at = datetime.now()
+        if len(**kwargs) != 0:
+            for k, v in kwargs:
+                if k in ("created_at", "updated_at"):
+                    setattr(self, k, datetime.fromisoformat(v))
+                else:
+                    setattr(self, k, v)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """
         Returns a string representation of the object.
         """
         ans = "[{}] ({}) {}".format(type(self).__name__,
-                                       self.id, self.__dict__)
+                                    self.id, self.__dict__)
         return ans
 
     def save(self):
