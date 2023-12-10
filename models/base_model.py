@@ -18,9 +18,11 @@ class BaseModel:
         Initializes the object by setting the unique identifier and
         timestamps.
         """
-        if len(**kwargs) != 0:
-            for k, v in kwargs:
-                if k in ("created_at", "updated_at"):
+        if kwargs:
+            for k, v in kwargs.items():
+                if k == "__class__":
+                    continue
+                elif k in ("created_at", "updated_at"):
                     setattr(self, k, datetime.fromisoformat(v))
                 else:
                     setattr(self, k, v)
