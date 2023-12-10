@@ -4,8 +4,6 @@ this is file storage for my objects
 """
 import json
 
-from models.base_model import BaseModel
-
 
 class FileStorage:
     """
